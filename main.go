@@ -14,7 +14,6 @@ var startTime time.Time = time.Now()
 func server() {
 	e := gin.Default()
 	e.GET("/ping", func(ctx *gin.Context) {
-		// Simulando falha nos primeiros 5 segundos após o início do servidor
 		if time.Since(startTime) < 5*time.Second {
 			ctx.String(http.StatusInternalServerError, "Intentional fail for the first 5 seconds")
 			return
@@ -26,7 +25,7 @@ func server() {
 }
 
 func doReq() error {
-	resp, err := http.Get("http://localhost:8080/ping") // Corrigindo a URL
+	resp, err := http.Get("http://localhost:8080/ping")
 	if err != nil {
 		return err
 	}
@@ -51,7 +50,7 @@ func main() {
 				return counts.ConsecutiveFailures == 3
 			},
 			OnStateChange: func(name string, from gobreaker.State, to gobreaker.State) {
-				fmt.Printf("CircuitBreaker '%s' changed from '%s' to '%s'\n", name, from, to) // Corrigindo a formatação do log
+				fmt.Printf("CircuitBreaker '%s' changed from '%s' to '%s'\n", name, from, to)
 			},
 		},
 	)
